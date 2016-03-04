@@ -50,7 +50,7 @@ x = str
 // ===================
 // 実際の型を判定する
 // ===================
-// 
+//
 
 // 空のインターフェイス
 type Element interface{}
@@ -74,4 +74,30 @@ switch value := element.(type) {
     fmt.Println("string value:%d", value)
   default:
     fmt.Println("other")
+}
+
+// ==========================================
+// nilのインターフェイスは必ずしもnilじゃない
+// ==========================================
+
+type MagicError struct{}
+
+func (MagicError) Error() string {
+  return "[Magic]"
+}
+
+func Generate() *MagicError {
+  return nil
+}
+
+func Test() error {
+  return Generate()
+}
+
+func main() {
+  if Test() != nil {
+    // Hello, Mer. Pike!が出力される・・・
+    // nilインターフェイスはnilじゃない
+    fmt.Println("Hello, Mr. Pike!")
+  }
 }
